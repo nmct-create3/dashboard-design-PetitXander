@@ -56,7 +56,7 @@
 
     /* transitions */
     --transition-alpha: .1s;
-    --transition-beta: .7s;
+    --transition-beta: 1s;
 
     /* Whitespace */
     --global-baseline: 5px;
@@ -68,6 +68,8 @@
     --global-whitespace-xl: calc(var(--global-baseline) * 6); /* 30 */
 
     --pi: 3.14159265359;
+
+    --c-app__topbar-height: 70px;
 }
 
 /*------------------------------------*\
@@ -348,26 +350,19 @@ input::placeholder {
         min-height: 100vh;
         display: grid;
         grid-template-columns: 260px 1fr;
-        grid-template-rows: auto 1fr;
+        grid-template-rows: var(--c-app__topbar-height) 1fr;
     }
 }
 
 .c-app__logo {
     background-color: var(--global-color-neutral-xxx-dark);
-    padding: 25px 20px;
+    padding: 0 var(--global-whitespace-md);
+    display: flex;
+    align-items: center;
 }
 
 .c-app__topbar {
-    /* background-color: var(--color-white);
-    box-shadow: var(--global-box-shadow); */
-
-}
-
-.c-app_topbar_text{
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 70px;
+    content: "";
     background-color: var(--color-white);
     box-shadow: var(--global-box-shadow);
 }
@@ -377,7 +372,15 @@ input::placeholder {
 }
 
 .c-app__main {
+    padding: var(--global-whitespace-md) var(--global-whitespace-lg);
+}
 
+/* Scroll behaviour */
+
+.c-app__sidebar, .c-app__main {
+    height: calc(100vh - var(--c-app__topbar-height));
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /*
@@ -403,11 +406,10 @@ input::placeholder {
 
 .c-nav__list {
     padding: 0;
-    
 }
 
 .c-nav__list-item {
-    padding: 17px 25px;
+    padding: var(--global-whitespace-sm) var(--global-whitespace-lg);
 }
 
 .c-nav__link{
@@ -418,7 +420,7 @@ input::placeholder {
 .c-nav__icon {
     width: 16px;
     height: 16px;
-    margin-right: 10px;
+    margin-right: var(--global-whitespace-sm);
     fill: var(--global-color-neutral);
 }
 
@@ -436,14 +438,9 @@ input::placeholder {
 /* Hover */
 .c-nav__list-item{
     position: relative;
-    
 }
 
-.c-nav__list-item:hover{
-    background-color: rgba(0,0,0,.1);
-    transition: var(--transition-beta);
-    
-}
+.c-nav__list-item:hover,
 .is-selected {
     background-color: rgba(0,0,0,.1);
 }
@@ -456,20 +453,56 @@ input::placeholder {
 .c-nav__list-item::after{
     content: "";
     width: 4px;
-    background: none;
+    background: var(--color-delta);
+    opacity: 0;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
-    transition: var(--transition-beta);
+    transition: opacity var(--transition-beta);
 }
 
 .is-selected::after,
 .c-nav__list-item:hover::after {
-    background: var(--color-delta);
-    
+    opacity: 1;
+    transition: opacity var(--transition-alpha);
 }
 
+/*
+    Component: dashboard
+    ---
+    Dashboard using CSS grid
+*/
+
+.c-dashboard {
+    display: grid;
+    grid-template-columns: repeat(12,1fr);
+    grid-gap: 30px;
+    gap: 30px;
+}
+
+.c-dashboard__item {
+    background: white;
+    box-shadow: var(--global-box-shadow);
+    padding: var(--global-whitespace-sm);
+    grid-column: span 12;
+}
+
+.u-column-span-4 {
+    grid-column: span 4;
+}
+
+.u-column-span-6 {
+    grid-column: span 6;
+}
+
+.u-column-span-8 {
+    grid-column: span 8;
+}
+
+.u-row-span-2 {
+    grid-row: span 2;
+}
 
 /*------------------------------------*\
 #UTILITIES
